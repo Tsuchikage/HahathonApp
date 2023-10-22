@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  db_products:
+    image: postgres:alpine3.18
+    container_name: db_products
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: products
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_products_data:/data/db
+
+volumes:
+  postgres_products_data:
+    driver: local
