@@ -1,15 +1,33 @@
 from pydantic import BaseModel, Field
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 
-from database import Base
+from App.database import Base
 
 
-class Product(Base):
-    __tablename__ = 'products'
+class UsersCard(Base):
+    __tablename__ = 'usercards'
 
     id = Column(Integer, primary_key=True, index=True)
-    product_name = Column(String)
+    user_card_name = Column(String)
+    owner_id = Column(Integer, ForeignKey("users.id"))
 
 
-class ProductRequest(BaseModel):
-    name: str = Field(min_length=3)
+class UsersCardRequest(BaseModel):
+    user_card_name: str = Field(min_length=3)
+
+
+class Users(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True)
+    username = Column(String, unique=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    hashed_password = Column(String)
+    is_active = Column(Boolean, default=True)
+    role = Column(String)
+
+
+# class UsersRequest(BaseModel):
+#     user_card_name: str = Field(min_length=3)

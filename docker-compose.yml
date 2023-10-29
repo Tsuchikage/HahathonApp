@@ -1,19 +1,18 @@
 version: '3'
 
 services:
-  db_products:
+  db_hackathonapp:
     image: postgres:alpine3.18
-    container_name: db_products
+    container_name: db_hackathonapp
     restart: always
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: products
+      POSTGRES_DB: hackathonapp
     ports:
       - '5432:5432'
     volumes:
-      - postgres_products_data:/data/db
-
+      - postgres_hackathonapp_data:/data/db
 volumes:
-  postgres_products_data:
+  postgres_hackathonapp_data:
     driver: local
