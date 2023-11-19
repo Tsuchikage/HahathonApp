@@ -4,7 +4,7 @@ from App import models
 from App.database import SessionLocal
 from typing import Annotated
 from sqlalchemy.orm import Session
-from fastapi import Depends, HTTPException, Path, APIRouter
+from fastapi import Depends, HTTPException, APIRouter
 from starlette import status
 from .auth import get_current_user
 from passlib.context import CryptContext

@@ -29,7 +29,7 @@ class CreateUserRequest(BaseModel):
     first_name: str
     last_name: str
     password: str
-    role: str
+    role: str = "user"
 
 
 class Token(BaseModel):
