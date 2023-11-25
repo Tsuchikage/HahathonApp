@@ -12,23 +12,24 @@ class Settings(BaseSettings):
     APP_TITLE: str = "FastAPI JWT Auth API"
     VERSION: str = "1.0.0"
 
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
-    # REFRESH_TOKEN_EXPIRE_DAYS: int = os.getenv('REFRESH_TOKEN_EXPIRE_DAYS')
-    JWT_SECRET: str = os.getenv('JWT_SECRET')
-    JWT_ALGORITHM: str = os.getenv('JWT_ALGORITHM')
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    # REFRESH_TOKEN_EXPIRE_DAYS: int = 30
+    JWT_SECRET: str = "d1fe428d-1b8b-47a2-bef1-660329781d5074457a17-8cc8-451b-aff5-06bf6cb4aee4"
+    JWT_ALGORITHM: str = "HS256"
 
-    POSTGRES_USER: str = os.getenv('POSTGRES_USER')
-    POSTGRES_PASSWORD: str = os.getenv('POSTGRES_PASSWORD')
-    POSTGRES_NAME: str = os.getenv('POSTGRES_NAME')
-    POSTGRES_HOST: str = os.getenv('POSTGRES_HOST')
-    POSTGRES_PORT: int = os.getenv('POSTGRES_PORT')
-    DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_NAME}"
+    POSTGRES_USER: str = "user"
+    POSTGRES_PASSWORD: str = "password"
+    POSTGRES_DB: str = "database"
+    POSTGRES_HOST: str = "postgres"
+    POSTGRES_PORT: int = 5432
+    DATABASE_URL: str = "postgresql://user:password@postgres:5432/database"
 
+    # "postgresql://user:password@localhost:5432/database"
     @model_validator(mode="after")
     def validator(cls, values: "Settings") -> "Settings":
         values.DATABASE_URL = (
             f"{values.POSTGRES_USER}:{values.POSTGRES_PASSWORD}@"
-            f"{values.POSTGRES_HOST}:{values.POSTGRES_PORT}/{values.POSTGRES_NAME}"
+            f"{values.POSTGRES_HOST}:{values.POSTGRES_PORT}/{values.POSTGRES_DB}"
         )
         return values
 
