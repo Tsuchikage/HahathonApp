@@ -1,21 +1,51 @@
-from fastapi import APIRouter, status, Depends, Header
-from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy.orm import Session
-from server.core.database import get_db
-from server.auth.services import get_token, get_refresh_token
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.ext.asyncio import AsyncSession
 
-router = APIRouter(
-    prefix="/auth",
-    tags=["Auth"],
-    responses={404: {"description": "Not found"}},
+from server.auth.schemas import Credentials, Refresh, Token
+from server.auth.services import (
+    authenticate_refresh_token,
+    authenticate_user,
+    generate_token,
 )
+from server.core.database import get_db
+from server.core.schemas import ExceptionSchema
+
+auth_router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
-@router.post("/token", status_code=status.HTTP_200_OK)
-async def authenticate_user(data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    return await get_token(data=data, db=db)
+@auth_router.post(
+    "/token",
+    response_model=Token,
+    responses={401: {"model": ExceptionSchema}},
+)
+async def token(credentials: Credentials, db: AsyncSession = Depends(get_db)) -> dict:
+    if user := await authenticate_user(
+        username=credentials.username,
+        password=credentials.password,
+        db=db,
+    ):
+        return await generate_token(
+            user_id=user.id, password_timestamp=user.password_timestamp
+        )
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Incorrect username or password",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
 
 
-@router.post("/refresh", status_code=status.HTTP_200_OK)
-async def refresh_access_token(refresh_token: str = Header(), db: Session = Depends(get_db)):
-    return await get_refresh_token(token=refresh_token, db=db)
+@auth_router.post(
+    "/refresh",
+    response_model=Token,
+    responses={401: {"model": ExceptionSchema}},
+)
+async def refresh(request: Refresh, db: AsyncSession = Depends(get_db)) -> dict:
+    if new_token := await authenticate_refresh_token(
+        token=request.refresh_token, db=db
+    ):
+        return new_token
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid or expired token",
+        headers={"WWW-Authenticate": "Bearer"},
+    )

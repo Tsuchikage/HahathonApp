@@ -2,20 +2,20 @@ version: '3'
 
 services:
 
-#  api:
-#    container_name: api
-#    build:
-#      context: .
-#      dockerfile: ./config/dockerfile
-#    restart: always
-#    ports:
-#      - "8040:8000"
-#    env_file:
-#      - ./config/.env
-#    volumes:
-#      - ./source:/app/source
-#    depends_on:
-#      - postgres
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: ./config/dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./config/.env
+    volumes:
+      - ./server:/app/server
+    depends_on:
+      - postgres
 
   postgres:
     container_name: postgres

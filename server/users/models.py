@@ -1,19 +1,17 @@
-from sqlalchemy import Boolean, Column, Integer, String, DateTime, func
-from datetime import datetime
+from sqlalchemy import Boolean, Column, Float, String
 
+from server.core.models import Model
 from server.core.database import Base
 
 
-class UserModel(Base):
-    __tablename__ = "users"
-    id = Column(Integer, primary_key=True, index=True)
-    first_name = Column(String(100))
-    last_name = Column(String(100))
-    email = Column(String(255), unique=True, index=True)
-    password = Column(String(100))
-    is_active = Column(Boolean, default=False)
-    is_verified = Column(Boolean, default=False)
-    verified_at = Column(DateTime, nullable=True, default=None)
-    registered_at = Column(DateTime, nullable=True, default=None)
-    updated_at = Column(DateTime, nullable=True, default=None, onupdate=datetime.now)
-    created_at = Column(DateTime, nullable=False, server_default=func.now())
+class User(Model):
+    __tablename__ = "User"
+
+    username = Column(name="username", type_=String, unique=True, index=True)
+    password = Column(name="password", type_=String)
+    email = Column(name="email", type_=String)
+    first_name = Column(name="first_name", type_=String, nullable=True)
+    last_name = Column(name="last_name", type_=String, nullable=True)
+    active = Column(name="active", type_=Boolean)
+    role = Column(name="role", type_=String)
+    password_timestamp = Column(name="password_timestamp", type_=Float)

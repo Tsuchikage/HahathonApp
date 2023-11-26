@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.10
 
 WORKDIR /app
 
@@ -8,6 +8,7 @@ ENV PYTHONUNBUFFERED 1
 COPY config/requirements.txt config/
 RUN pip install --no-cache-dir -r config/requirements.txt
 
+COPY alembic.ini .
 COPY server server
 
-CMD uvicorn main:app --host 0.0.0.0 --reload
+CMD alembic upgrade head && uvicorn server.main:app --host 0.0.0.0 --reload
