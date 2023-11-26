@@ -25,7 +25,7 @@ async def validate_user(user: User) -> User:
 
 
 async def authenticate_user(
-    username: str, password: str, db: AsyncSession
+        username: str, password: str, db: AsyncSession
 ) -> User | None:
     user = (
         (await db.execute(select(User).filter_by(username=username)))
@@ -38,9 +38,9 @@ async def authenticate_user(
 
 
 async def authenticate_token(
-    user_id: int,
-    password_timestamp: float,
-    db: AsyncSession,
+        user_id: int,
+        password_timestamp: float,
+        db: AsyncSession,
 ) -> User | None:
     user: User | None = await db.get(User, user_id)
     if user and password_timestamp == user.password_timestamp:
@@ -49,21 +49,21 @@ async def authenticate_token(
 
 
 async def generate_token(
-    user_id: int,
-    password_timestamp: float,
+        user_id: int,
+        password_timestamp: float,
 ) -> dict:
     access = {
         "user_id": user_id,
         "password_timestamp": password_timestamp,
         "exp": datetime.utcnow()
-        + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+               + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
         "token_type": TokenType.ACCESS,
     }
     refresh = access.copy()
     refresh.update(
         {
             "exp": datetime.utcnow()
-            + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS),
+                   + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS),
             "token_type": TokenType.REFRESH,
         }
     )
@@ -85,21 +85,21 @@ async def decode_token(token: str) -> dict:
 
 
 async def authenticate_access_token(
-    token: str, db: AsyncSession, roles: list | None = None
+        token: str, db: AsyncSession, roles: list | None = None
 ) -> User | None:
     payload = await decode_token(token)
     if payload and payload.get("token_type") == TokenType.ACCESS:
         if user := await authenticate_token(
-            user_id=payload["user_id"],
-            password_timestamp=payload["password_timestamp"],
-            db=db,
+                user_id=payload["user_id"],
+                password_timestamp=payload["password_timestamp"],
+                db=db,
         ):
             if not roles or user.role in roles:
                 return user
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Access restricted. "
-                f"Only {roles} are allowed to access this endpoint.",
+                       f"Only {roles} are allowed to access this endpoint.",
             )
     return None
 
@@ -108,9 +108,9 @@ async def authenticate_refresh_token(token: str, db: AsyncSession) -> dict | Non
     payload = await decode_token(token)
     if payload and payload.get("token_type") == TokenType.REFRESH:
         if user := await authenticate_token(
-            user_id=payload["user_id"],
-            password_timestamp=payload["password_timestamp"],
-            db=db,
+                user_id=payload["user_id"],
+                password_timestamp=payload["password_timestamp"],
+                db=db,
         ):
             return await generate_token(
                 user_id=user.id,
@@ -130,14 +130,14 @@ async def authenticate(token: str, db: AsyncSession, roles: list | None = None) 
 
 
 async def auth(
-    token: HTTPAuthorizationCredentials = Security(HTTPBearer()),
-    db: AsyncSession = Depends(get_db),
+        token: HTTPAuthorizationCredentials = Security(HTTPBearer()),
+        db: AsyncSession = Depends(get_db),
 ) -> User:
     return await authenticate(token=token.credentials, db=db)
 
 
 async def auth_admin(
-    token: HTTPAuthorizationCredentials = Security(HTTPBearer()),
-    db: AsyncSession = Depends(get_db),
+        token: HTTPAuthorizationCredentials = Security(HTTPBearer()),
+        db: AsyncSession = Depends(get_db),
 ) -> User:
     return await authenticate(token=token.credentials, db=db, roles=[Roles.ADMIN.value])

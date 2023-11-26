@@ -20,9 +20,9 @@ auth_router = APIRouter(prefix="/auth", tags=["Auth"])
 )
 async def token(credentials: Credentials, db: AsyncSession = Depends(get_db)) -> dict:
     if user := await authenticate_user(
-        username=credentials.username,
-        password=credentials.password,
-        db=db,
+            username=credentials.username,
+            password=credentials.password,
+            db=db,
     ):
         return await generate_token(
             user_id=user.id, password_timestamp=user.password_timestamp
@@ -41,7 +41,7 @@ async def token(credentials: Credentials, db: AsyncSession = Depends(get_db)) ->
 )
 async def refresh(request: Refresh, db: AsyncSession = Depends(get_db)) -> dict:
     if new_token := await authenticate_refresh_token(
-        token=request.refresh_token, db=db
+            token=request.refresh_token, db=db
     ):
         return new_token
     raise HTTPException(

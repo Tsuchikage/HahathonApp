@@ -35,9 +35,9 @@ async def create_user(user: UserRequest, db: AsyncSession) -> UserResponse | Non
 
 
 async def update_user(
-    user: User,
-    payload: UserUpdateRequest,
-    db: AsyncSession,
+        user: User,
+        payload: UserUpdateRequest,
+        db: AsyncSession,
 ) -> UserResponse | None:
     try:
         fields_to_update = UserUpdate(**payload.model_dump()).model_dump().items()
@@ -58,7 +58,7 @@ async def delete_user(user: User, db: AsyncSession) -> None:
 
 
 async def list_users(
-    page: int, size: int, sort: Sort, order: Order, db: AsyncSession
+        page: int, size: int, sort: Sort, order: Order, db: AsyncSession
 ) -> UserPage:
     order = asc(sort) if order == Order.ASC else desc(sort)
     users, total = await gather(

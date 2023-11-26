@@ -26,7 +26,7 @@ users_router = APIRouter(prefix="/user")
     tags=["User"],
 )
 async def user_create(
-    user: UserRequest, db: AsyncSession = Depends(get_db)
+        user: UserRequest, db: AsyncSession = Depends(get_db)
 ) -> UserResponse:
     if created_user := await create_user(user=user, db=db):
         return created_user
@@ -56,9 +56,9 @@ async def user_get(user: CurrentUser) -> UserResponse:
     tags=["User"],
 )
 async def user_update(
-    user: CurrentUser,
-    payload: UserUpdateRequest,
-    db: AsyncSession = Depends(get_db),
+        user: CurrentUser,
+        payload: UserUpdateRequest,
+        db: AsyncSession = Depends(get_db),
 ) -> UserResponse:
     if updated_user := await update_user(user=user, payload=payload, db=db):
         return updated_user
@@ -86,9 +86,9 @@ async def user_delete(user: CurrentUser, db: AsyncSession = Depends(get_db)) -> 
     tags=["Admin"],
 )
 async def users_list(
-    admin: Admin,
-    pagination: UserPagination = Depends(),
-    db: AsyncSession = Depends(get_db),
+        admin: Admin,
+        pagination: UserPagination = Depends(),
+        db: AsyncSession = Depends(get_db),
 ) -> UserPage:
     return await list_users(
         page=pagination.page,

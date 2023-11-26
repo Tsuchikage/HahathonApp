@@ -5,6 +5,7 @@ from server.users.utils import create_admin
 from server.core.routers import api_router
 from server.core.settings import settings
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await create_admin()
