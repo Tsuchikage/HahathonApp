@@ -1,28 +1,49 @@
 version: '3'
 
 services:
-
-  api:
-    container_name: api
+  client:
+    container_name: client
     build:
-      context: .
-      dockerfile: ./config/dockerfile
-    restart: always
+      context: ./client
+      dockerfile: Dockerfile
+    command: npm run start
     ports:
-      - "8000:8000"
-    env_file:
-      - ./config/.env
+      - '3000:${CLIENT_PORT:-3000}'
+  server:
+    container_name: server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file: .env
+    environment:
+      - PYTHONUNBUFFERED=0
+      - PYTHONPATH=/app/server
+      - ENVIRONMENT=production
+    restart: always
+    command: uvicorn server.src.main:app --host 0.0.0.0 --port ${SERVER_PORT:-8000}
+    ports:
+      - '8000:${SERVER_PORT:-8000}'
     volumes:
       - ./server:/app/server
     depends_on:
-      - postgres
-
-  postgres:
-    container_name: postgres
+      - db
+  db:
+    container_name: db
     image: postgres
     restart: always
     ports:
-      - "5432:5432"
-    env_file:
-      - ./config/.env
-
+      - '5432:5432'
+    env_file: .env
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - client
+      - server
+    environment:
+      CLIENT_PORT: ${CLIENT_PORT:-3000}
+      SERVER_PORT: ${SERVER_PORT:-8000}
