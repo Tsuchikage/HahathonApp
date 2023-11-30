@@ -5,9 +5,9 @@ from sqlalchemy import asc, desc, func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from server.users.enums import Order, Sort
-from server.users.models import User
-from server.users.schemas import (
+from src.users.enums import Order, Sort
+from src.users.models import User
+from src.users.schemas import (
     UserCreate,
     UserPage,
     UserRequest,

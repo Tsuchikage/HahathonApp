@@ -2,9 +2,9 @@ from datetime import datetime
 
 from pydantic import BaseModel, EmailStr, Field, model_validator
 
-from server.auth.utils import get_password_hash
-from server.users.enums import Order, Roles, Sort
-from server.core.schemas import PageSchema, PaginationSchema, ResponseSchema
+from src.auth.utils import get_password_hash
+from src.users.enums import Order, Roles, Sort
+from src.core.schemas import PageSchema, PaginationSchema, ResponseSchema
 
 
 class UserRequest(BaseModel):

@@ -1,7 +1,6 @@
 from sqlalchemy import Boolean, Column, Float, String
 
-from server.core.models import Model
-from server.core.database import Base
+from src.core.models import Model
 
 
 class User(Model):

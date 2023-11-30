@@ -1,19 +1,19 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from server.auth.schemas import Credentials, Refresh, Token
-from server.auth.services import (
+from src.auth.schemas import Credentials, Refresh, Token
+from src.auth.services import (
     authenticate_refresh_token,
     authenticate_user,
     generate_token,
 )
-from server.core.database import get_db
-from server.core.schemas import ExceptionSchema
+from src.core.database import get_db
+from src.core.schemas import ExceptionSchema
 
-auth_router = APIRouter(prefix="/auth", tags=["Auth"])
+router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
-@auth_router.post(
+@router.post(
     "/token",
     response_model=Token,
     responses={401: {"model": ExceptionSchema}},
@@ -34,7 +34,7 @@ async def token(credentials: Credentials, db: AsyncSession = Depends(get_db)) ->
     )
 
 
-@auth_router.post(
+@router.post(
     "/refresh",
     response_model=Token,
     responses={401: {"model": ExceptionSchema}},

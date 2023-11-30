@@ -7,12 +7,12 @@ from jose.exceptions import JWTClaimsError
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from server.auth.enums import TokenType
-from server.auth.utils import verify_password
-from server.users.enums import Roles
-from server.users.models import User
-from server.core.database import get_db
-from server.core.settings import settings
+from src.auth.enums import TokenType
+from src.auth.utils import verify_password
+from src.users.enums import Roles
+from src.users.models import User
+from src.core.database import get_db
+from src.core.settings import settings
 
 
 async def validate_user(user: User) -> User:
@@ -56,20 +56,20 @@ async def generate_token(
         "user_id": user_id,
         "password_timestamp": password_timestamp,
         "exp": datetime.utcnow()
-               + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+               + timedelta(minutes=settings.access_token_expire_minutes),
         "token_type": TokenType.ACCESS,
     }
     refresh = access.copy()
     refresh.update(
         {
             "exp": datetime.utcnow()
-                   + timedelta(days=settings.REFRESH_TOKEN_EXPIRE_DAYS),
+                   + timedelta(days=settings.refresh_token_expire_days),
             "token_type": TokenType.REFRESH,
         }
     )
-    access_token = jwt.encode(access, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    access_token = jwt.encode(access, settings.secret_key, algorithm=settings.algorithm)
     refresh_token = jwt.encode(
-        refresh, settings.SECRET_KEY, algorithm=settings.ALGORITHM
+        refresh, settings.secret_key, algorithm=settings.algorithm
     )
     return {
         "access_token": access_token,
@@ -79,7 +79,7 @@ async def generate_token(
 
 async def decode_token(token: str) -> dict:
     try:
-        return jwt.decode(token, settings.SECRET_KEY, algorithms=settings.ALGORITHM)
+        return jwt.decode(token, settings.secret_key, algorithms=settings.algorithm)
     except (JWTError, ExpiredSignatureError, JWTClaimsError):
         return {}
 
