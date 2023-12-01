@@ -9,6 +9,7 @@ services:
     command: npm run start
     ports:
       - '3000:${CLIENT_PORT:-3000}'
+
   server:
     container_name: server
     build:
@@ -20,13 +21,14 @@ services:
       - PYTHONPATH=/app/server
       - ENVIRONMENT=production
     restart: always
-    command: uvicorn server.src.main:app --host 0.0.0.0 --port ${SERVER_PORT:-8000}
+    command: /app/start.sh
     ports:
       - '8000:${SERVER_PORT:-8000}'
     volumes:
       - ./server:/app/server
     depends_on:
       - db
+
   db:
     container_name: db
     image: postgres
@@ -47,3 +49,9 @@ services:
     environment:
       CLIENT_PORT: ${CLIENT_PORT:-3000}
       SERVER_PORT: ${SERVER_PORT:-8000}
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

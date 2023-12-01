@@ -5,10 +5,10 @@ from src.users.utils import create_admin
 from src.core.routers import api_router
 
 
-# @asynccontextmanager
-# async def lifespan(app: FastAPI):
-#     await create_admin()
-#     yield
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await create_admin()
+    yield
 
 
 def create_app():
@@ -17,7 +17,7 @@ def create_app():
         version="0.0.1",
         docs_url="/api/docs",
         openapi_url="/api/openapi.json",
-        # lifespan=lifespan
+        lifespan=lifespan
     )
 
     app.include_router(api_router)
