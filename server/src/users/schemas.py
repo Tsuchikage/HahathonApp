@@ -36,7 +36,7 @@ class UserResponse(ResponseSchema):
     telegram: str | None
     linkedin: str | None
     github: str | None
-    education: str | None
+    # education: str | None
     industry: str | None
     experience_level: str | None
     language: str | None
@@ -59,7 +59,7 @@ class UserUpdateRequest(BaseModel):
     telegram: str | None = None
     linkedin: str | None = None
     github: str | None = None
-    education: str | None = None
+    # education: str | None = None
     industry: str | None = None
     experience_level: str | None = None
     language: str | None = None
