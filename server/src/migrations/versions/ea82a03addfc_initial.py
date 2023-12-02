@@ -1,10 +1,3 @@
-"""initial
-
-Revision ID: ea82a03addfc
-Revises:
-Create Date: 2023-10-27 06:04:15.835670
-
-"""
 import sqlalchemy as sa
 from alembic import op
 
@@ -30,6 +23,25 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("create_date", sa.DateTime(), nullable=True),
         sa.Column("update_date", sa.DateTime(), nullable=True),
+        sa.Column("country", sa.String(), nullable=True),
+        sa.Column("city", sa.String(), nullable=True),
+        sa.Column("telegram", sa.String(), unique=True, nullable=True),
+        sa.Column("linkedin", sa.String(), unique=True, nullable=True),
+        sa.Column("github", sa.String(), unique=True, nullable=True),
+        # sa.Column(
+        #     "education",
+        #     sa.Enum(
+        #         'High school degree',
+        #         'Associate degree',
+        #         'Bachelor\'s degree',
+        #         'Master\'s degree',
+        #         'Doctoral degree',
+        #         name='education_enum')),
+        sa.Column("industry", sa.String(), nullable=True),
+        sa.Column("experience_level", sa.String(), nullable=True),
+        sa.Column("language", sa.String(), nullable=True),
+        sa.Column("hard_skills", sa.String(), nullable=True),
+        sa.Column("soft_skills", sa.String(), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_User_create_date"), "User", ["create_date"], unique=False)
