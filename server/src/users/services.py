@@ -19,6 +19,7 @@ from src.users.schemas import (
 
 async def get_user(user_id: int, db: AsyncSession) -> UserResponse | None:
     if user := await db.get(User, user_id):
+        print("User get:", user)
         return UserResponse.model_validate(user)
     return None
 
@@ -34,6 +35,7 @@ async def create_user(user: UserRequest, db: AsyncSession) -> UserResponse | Non
         return None
 
 
+# TODO: Исправить обновление полей пользователя
 async def update_user(
         user: User,
         payload: UserUpdateRequest,
@@ -46,6 +48,7 @@ async def update_user(
                 setattr(user, key, value)
         await db.commit()
         await db.refresh(user)
+        print("User updated successfully:", user)
         return UserResponse.model_validate(user)
     except IntegrityError:
         return None
@@ -73,3 +76,24 @@ async def list_users(
         total=total,
         pages=(ceil(total / size) if size else 1),
     )
+
+#
+# async def update_user_profile(
+#     user: User,
+#     payload: UserUpdateProfileRequest,
+#     db: AsyncSession,
+# ) -> UserUpdateProfileResponse | None:
+#     try:
+#         for field, value in payload.dict(exclude_unset=True).items():
+#             setattr(user, field, value)
+#
+#         await db.commit()
+#         await db.refresh(user)
+#
+#         return UserUpdateProfileResponse(
+#             **user.__dict__,
+#         )
+#
+#     except IntegrityError:
+#         return None
+#

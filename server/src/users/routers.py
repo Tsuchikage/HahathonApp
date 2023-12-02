@@ -9,6 +9,7 @@ from src.users.schemas import (
     UserResponse,
     UserUpdateRequest,
 )
+
 from src.users.services import create_user, delete_user, list_users, update_user
 from src.core.database import get_db
 from src.core.schemas import ExceptionSchema
@@ -43,6 +44,7 @@ async def user_create(
     tags=["user"],
 )
 async def user_get(user: CurrentUser) -> UserResponse:
+    print("User in user_get:", user)
     return UserResponse.model_validate(user)
 
 
@@ -97,3 +99,35 @@ async def users_list(
         order=pagination.order,
         db=db,
     )
+
+#
+# @router.patch(
+#     "/profile",
+#     response_model=UserUpdateProfileResponse,
+#     responses={
+#         status.HTTP_401_UNAUTHORIZED: {"model": ExceptionSchema},
+#         status.HTTP_404_NOT_FOUND: {"model": ExceptionSchema},
+#     },
+#     tags=["user"],
+# )
+# async def user_update_profile(
+#         user: CurrentUser,
+#         payload: UserUpdateProfileRequest,
+#         db: AsyncSession = Depends(get_db),
+# ) -> UserUpdateProfileResponse:
+#     if updated_profile := await update_user_profile(user=user, payload=payload, db=db):
+#         return updated_profile
+#     raise HTTPException(
+#         status_code=status.HTTP_404_NOT_FOUND,
+#         detail=f"User profile not found",
+#     )
+#
+#
+# @router.get(
+#     "/profile",
+#     response_model=UserUpdateProfileResponse,
+#     tags=["user"],
+# )
+# async def get_user_profile_endpoint(user: CurrentUser) -> UserUpdateProfileResponse:
+#     return UserUpdateProfileResponse.model_validate(user)
+

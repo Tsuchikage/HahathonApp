@@ -31,6 +31,17 @@ class UserResponse(ResponseSchema):
     email: EmailStr
     first_name: str | None
     last_name: str | None
+    country: str | None
+    city: str | None
+    telegram: str | None
+    linkedin: str | None
+    github: str | None
+    # education: str | None
+    industry: str | None
+    experience_level: str | None
+    language: str | None
+    hard_skills: str | None
+    soft_skills: str | None
     active: bool
     role: Roles
     create_date: datetime
@@ -43,6 +54,17 @@ class UserUpdateRequest(BaseModel):
     email: EmailStr | None = None
     first_name: str | None = None
     last_name: str | None = None
+    country: str | None = None
+    city: str | None = None
+    telegram: str | None = None
+    linkedin: str | None = None
+    github: str | None = None
+    # education: str | None = None
+    industry: str | None = None
+    experience_level: str | None = None
+    language: str | None = None
+    hard_skills: str | None = None
+    soft_skills: str | None = None
 
 
 class UserUpdateRequestAdmin(UserUpdateRequest):

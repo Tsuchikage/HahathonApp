@@ -124,7 +124,7 @@ async def authenticate(token: str, db: AsyncSession, roles: list | None = None) 
         return user
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid or expired token",
+        detail=f"Invalid or expired token {user} ",
         headers={"WWW-Authenticate": "Bearer"},
     )
 
