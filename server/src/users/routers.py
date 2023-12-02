@@ -48,7 +48,7 @@ async def user_get(user: CurrentUser) -> UserResponse:
     return UserResponse.model_validate(user)
 
 
-@router.patch(
+@router.put(
     "/",
     response_model=UserResponse,
     responses={

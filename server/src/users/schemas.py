@@ -18,7 +18,6 @@ class UserRequest(BaseModel):
 class UserCreate(UserRequest):
     active: bool = True
     role: Roles = Roles.USER
-    password_timestamp: float = Field(default_factory=datetime.utcnow().timestamp)
 
     @model_validator(mode="after")
     def validator(cls, values: "UserCreate") -> "UserCreate":
@@ -73,13 +72,10 @@ class UserUpdateRequestAdmin(UserUpdateRequest):
 
 
 class UserUpdate(UserUpdateRequestAdmin):
-    password_timestamp: float | None = None
-
     @model_validator(mode="after")
     def validator(cls, values: "UserUpdate") -> "UserUpdate":
         if password := values.password:
             values.password = get_password_hash(password)
-            values.password_timestamp = datetime.utcnow().timestamp()
         return values
 
 

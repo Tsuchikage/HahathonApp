@@ -19,7 +19,6 @@ def upgrade() -> None:
         sa.Column("last_name", sa.String(), nullable=True),
         sa.Column("active", sa.Boolean(), nullable=True),
         sa.Column("role", sa.String(), nullable=True),
-        sa.Column("password_timestamp", sa.Float(), nullable=True),
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("create_date", sa.DateTime(), nullable=True),
         sa.Column("update_date", sa.DateTime(), nullable=True),
