@@ -35,6 +35,7 @@ async def create_user(user: UserRequest, db: AsyncSession) -> UserResponse | Non
         return None
 
 
+# TODO: Исправить обновление полей пользователя
 async def update_user(
         user: User,
         payload: UserUpdateRequest,

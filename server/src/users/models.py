@@ -5,7 +5,7 @@ from src.core.models import Model
 
 class User(Model):
     __tablename__ = "User"
-
+    # TODO: Поле education добавить enum
     username = Column(name="username", type_=String, unique=True, index=True)
     password = Column(name="password", type_=String)
     email = Column(name="email", type_=String)
