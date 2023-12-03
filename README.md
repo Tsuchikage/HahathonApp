@@ -10,5 +10,5 @@ docker-compose up
 
 ## Docs:
 ```bash
-OpenAPI: http://localhost:8000/docs
+OpenAPI: http://localhost:8000/api/docs
 ```
