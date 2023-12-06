@@ -39,22 +39,17 @@ async def authenticate_user(
 
 async def authenticate_token(
         user_id: int,
-        password_timestamp: float,
         db: AsyncSession,
 ) -> User | None:
     user: User | None = await db.get(User, user_id)
-    if user and password_timestamp == user.password_timestamp:
-        return await validate_user(user=user)
-    return None
+    return await validate_user(user=user)
 
 
 async def generate_token(
-        user_id: int,
-        password_timestamp: float,
+        user_id: int
 ) -> dict:
     access = {
         "user_id": user_id,
-        "password_timestamp": password_timestamp,
         "exp": datetime.utcnow()
                + timedelta(minutes=settings.access_token_expire_minutes),
         "token_type": TokenType.ACCESS,
@@ -91,7 +86,6 @@ async def authenticate_access_token(
     if payload and payload.get("token_type") == TokenType.ACCESS:
         if user := await authenticate_token(
                 user_id=payload["user_id"],
-                password_timestamp=payload["password_timestamp"],
                 db=db,
         ):
             if not roles or user.role in roles:
@@ -109,12 +103,10 @@ async def authenticate_refresh_token(token: str, db: AsyncSession) -> dict | Non
     if payload and payload.get("token_type") == TokenType.REFRESH:
         if user := await authenticate_token(
                 user_id=payload["user_id"],
-                password_timestamp=payload["password_timestamp"],
                 db=db,
         ):
             return await generate_token(
                 user_id=user.id,
-                password_timestamp=user.password_timestamp,
             )
     return None
 

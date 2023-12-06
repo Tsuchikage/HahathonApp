@@ -24,4 +24,3 @@ class User(Model):
     last_name = Column(name="last_name", type_=String, nullable=True)
     active = Column(name="active", type_=Boolean)
     role = Column(name="role", type_=String)
-    password_timestamp = Column(name="password_timestamp", type_=Float)

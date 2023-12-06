@@ -44,11 +44,10 @@ async def user_create(
     tags=["user"],
 )
 async def user_get(user: CurrentUser) -> UserResponse:
-    print("User in user_get:", user)
     return UserResponse.model_validate(user)
 
 
-@router.patch(
+@router.put(
     "/",
     response_model=UserResponse,
     responses={

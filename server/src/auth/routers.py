@@ -25,7 +25,7 @@ async def token(credentials: Credentials, db: AsyncSession = Depends(get_db)) ->
             db=db,
     ):
         return await generate_token(
-            user_id=user.id, password_timestamp=user.password_timestamp
+            user_id=user.id
         )
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
