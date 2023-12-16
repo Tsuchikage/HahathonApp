@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel, EmailStr, Field, model_validator
 
@@ -6,6 +7,7 @@ from src.auth.utils import get_password_hash
 from src.users.enums import Order, Roles, Sort
 from src.core.schemas import PageSchema, PaginationSchema, ResponseSchema
 
+from src.users.models import Status
 
 
 class UserRequest(BaseModel):
@@ -36,11 +38,7 @@ class UserResponse(ResponseSchema):
     telegram: str | None
     linkedin: str | None
     github: str | None
-    education: str | None = Field(
-        None,
-        description="Education level: High school degree, Associate degree, "
-                    "Bachelor's degree, Master's degree, Doctoral degree"
-    )
+    status: Status | None
     industry: str | None
     experience_level: str | None
     language: str | None
@@ -55,24 +53,20 @@ class UserResponse(ResponseSchema):
 class UserUpdateRequest(BaseModel):
     username: str | None = None
     password: str | None = None
-    email: EmailStr | None = None
-    first_name: str | None = None
-    last_name: str | None = None
-    country: str | None = None
-    city: str | None = None
-    telegram: str | None = None
-    linkedin: str | None = None
-    github: str | None = None
-    education: str | None = Field(
-        None,
-        description="Education level: High school degree, Associate degree, "
-                    "Bachelor's degree, Master's degree, Doctoral degree"
-    )
-    industry: str | None = None
-    experience_level: str | None = None
-    language: str | None = None
-    hard_skills: str | None = None
-    soft_skills: str | None = None
+    email: Optional[EmailStr] = None
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    country: Optional[str] = None
+    city: Optional[str] = None
+    telegram: Optional[str] = None
+    linkedin: Optional[str] = None
+    github: Optional[str] = None
+    status: Optional[str] = None
+    industry: Optional[str] = None
+    experience_level: Optional[str] = None
+    language: Optional[str] = None
+    hard_skills: Optional[str] = None
+    soft_skills: Optional[str] = None
 
 
 class UserUpdateRequestAdmin(UserUpdateRequest):

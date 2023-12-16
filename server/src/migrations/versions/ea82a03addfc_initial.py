@@ -32,20 +32,9 @@ def upgrade() -> None:
         sa.Column("language", sa.String(), nullable=True),
         sa.Column("hard_skills", sa.String(), nullable=True),
         sa.Column("soft_skills", sa.String(), nullable=True),
-        sa.Column("education", sa.String(), nullable=True),
+        sa.Column('status', sa.Enum('STARTED', 'ACCEPTED', name='status'), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
-
-    # Создание ENUM с проверкой его существования
-    education_enum = sa.Enum(
-        'High school degree',
-        'Associate degree',
-        'Bachelor\'s degree',
-        'Master\'s degree',
-        'Doctoral degree',
-        name='education_enum'
-    )
-    education_enum.create(op.get_bind(), checkfirst=True)
 
     op.create_index(op.f("ix_User_create_date"), "User", ["create_date"], unique=False)
     op.create_index(op.f("ix_User_id"), "User", ["id"], unique=True)
@@ -59,4 +48,3 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_User_id"), table_name="User")
     op.drop_index(op.f("ix_User_create_date"), table_name="User")
     op.drop_table("User")
-    sa.Enum(name='education_enum').drop(op.get_bind(), checkfirst=True)
