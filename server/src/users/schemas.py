@@ -7,6 +7,7 @@ from src.users.enums import Order, Roles, Sort
 from src.core.schemas import PageSchema, PaginationSchema, ResponseSchema
 
 
+
 class UserRequest(BaseModel):
     username: str
     password: str
@@ -35,7 +36,11 @@ class UserResponse(ResponseSchema):
     telegram: str | None
     linkedin: str | None
     github: str | None
-    # education: str | None
+    education: str | None = Field(
+        None,
+        description="Education level: High school degree, Associate degree, "
+                    "Bachelor's degree, Master's degree, Doctoral degree"
+    )
     industry: str | None
     experience_level: str | None
     language: str | None
@@ -58,7 +63,11 @@ class UserUpdateRequest(BaseModel):
     telegram: str | None = None
     linkedin: str | None = None
     github: str | None = None
-    # education: str | None = None
+    education: str | None = Field(
+        None,
+        description="Education level: High school degree, Associate degree, "
+                    "Bachelor's degree, Master's degree, Doctoral degree"
+    )
     industry: str | None = None
     experience_level: str | None = None
     language: str | None = None

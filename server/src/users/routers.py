@@ -99,34 +99,4 @@ async def users_list(
         db=db,
     )
 
-#
-# @router.patch(
-#     "/profile",
-#     response_model=UserUpdateProfileResponse,
-#     responses={
-#         status.HTTP_401_UNAUTHORIZED: {"model": ExceptionSchema},
-#         status.HTTP_404_NOT_FOUND: {"model": ExceptionSchema},
-#     },
-#     tags=["user"],
-# )
-# async def user_update_profile(
-#         user: CurrentUser,
-#         payload: UserUpdateProfileRequest,
-#         db: AsyncSession = Depends(get_db),
-# ) -> UserUpdateProfileResponse:
-#     if updated_profile := await update_user_profile(user=user, payload=payload, db=db):
-#         return updated_profile
-#     raise HTTPException(
-#         status_code=status.HTTP_404_NOT_FOUND,
-#         detail=f"User profile not found",
-#     )
-#
-#
-# @router.get(
-#     "/profile",
-#     response_model=UserUpdateProfileResponse,
-#     tags=["user"],
-# )
-# async def get_user_profile_endpoint(user: CurrentUser) -> UserUpdateProfileResponse:
-#     return UserUpdateProfileResponse.model_validate(user)
 
