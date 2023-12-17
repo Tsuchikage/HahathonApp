@@ -7,7 +7,7 @@ from src.auth.utils import get_password_hash
 from src.users.enums import Order, Roles, Sort
 from src.core.schemas import PageSchema, PaginationSchema, ResponseSchema
 
-from src.users.models import Status
+from src.users.models import Education
 
 
 class UserRequest(BaseModel):
@@ -38,7 +38,7 @@ class UserResponse(ResponseSchema):
     telegram: str | None
     linkedin: str | None
     github: str | None
-    status: Status | None
+    education: Education | None
     industry: str | None
     experience_level: str | None
     language: str | None
@@ -51,8 +51,8 @@ class UserResponse(ResponseSchema):
 
 
 class UserUpdateRequest(BaseModel):
-    username: str | None = None
-    password: str | None = None
+    username: str
+    password: str
     email: Optional[EmailStr] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
@@ -61,7 +61,7 @@ class UserUpdateRequest(BaseModel):
     telegram: Optional[str] = None
     linkedin: Optional[str] = None
     github: Optional[str] = None
-    status: Optional[str] = None
+    education: Optional[str] = None
     industry: Optional[str] = None
     experience_level: Optional[str] = None
     language: Optional[str] = None

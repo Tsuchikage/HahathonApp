@@ -14,7 +14,7 @@ def upgrade() -> None:
         "User",
         sa.Column("username", sa.String(), nullable=True),
         sa.Column("password", sa.String(), nullable=True),
-        sa.Column("email", sa.String(), nullable=True),
+        sa.Column("email", sa.String(),unique=True, nullable=True),
         sa.Column("first_name", sa.String(), nullable=True),
         sa.Column("last_name", sa.String(), nullable=True),
         sa.Column("active", sa.Boolean(), nullable=True),
@@ -32,7 +32,16 @@ def upgrade() -> None:
         sa.Column("language", sa.String(), nullable=True),
         sa.Column("hard_skills", sa.String(), nullable=True),
         sa.Column("soft_skills", sa.String(), nullable=True),
-        sa.Column('status', sa.Enum('STARTED', 'ACCEPTED', name='status'), nullable=True),
+        sa.Column(
+            'education',
+            sa.Enum(
+                'HIGH_SCHOOL',
+                'ASSOCIATE',
+                'BACHELOR',
+                'MASTER',
+                'DOCTORAL',
+                name='education'),
+            nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
 

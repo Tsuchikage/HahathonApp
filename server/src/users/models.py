@@ -2,10 +2,13 @@ from sqlalchemy import Boolean, Column, String, Enum as SQLAlchemyEnum
 from enum import Enum
 from src.core.models import Model
 
+class Education(Enum):
+    HIGH_SCHOOL = 'High school degree'
+    ASSOCIATE = 'Associate degree'
+    BACHELOR = 'Bachelor\'s degree'
+    MASTER = 'Master\'s degree'
+    DOCTORAL = 'Doctoral degree'
 
-class Status(Enum):
-    STARTED = 'STARTED'
-    ACCEPTED = 'ACCEPTED'
 
 class User(Model):
     __tablename__ = "User"
@@ -17,7 +20,7 @@ class User(Model):
     telegram = Column(name="telegram", type_=String)
     linkedin = Column(name="linkedin", type_=String)
     github = Column(name="github", type_=String)
-    status = Column(SQLAlchemyEnum(Status))
+    education = Column(SQLAlchemyEnum(Education))
     industry = Column(name="industry", type_=String)
     experience_level = Column(name="experience_level", type_=String)
     language = Column(name="language", type_=String)
