@@ -81,10 +81,22 @@
 - Возможность оставлять отзывы и ставить рейтинги участникам после завершения проекта.
 - Репутационная система для повышения доверия и привлечения внимания к опытным участникам.
 
-### <span style="color:#F0F8FF"> Архитектура </span>
+## <span style="color:#F0F8FF"> Архитектура </span>
 ![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/Architecture.png)
 
 
+
+## <span style="color:#F0F8FF"> Макет </span>
+### Стартовая страница
+![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/start_page.png)
+### Главная страница
+![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/main_page.png)
+### Модальное окно ЛК
+![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/profile_modal_page.png)
+### Информация о пользователе
+![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/person_card.png)
+### Команды
+![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/teams_page.png)
 
 ## <span style="color:#F0F8FF"> Run </span>
 ```bash
