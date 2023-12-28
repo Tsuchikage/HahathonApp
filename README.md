@@ -55,3 +55,63 @@
 - Внедрение механизмов регистрации и входа.
 - Защита данных пользователя с использованием современных методов шифрования.
 - Система аутентификации для обеспечения безопасности и личной идентификации участников.
+
+<span style="color:#E0FFFF">**Базовые Функции Личного Профиля пользователя:**</span>
+- Пользователи cмогут заполнить о себе информацию, указывая навыки, опыт, образование и интересы.
+
+<span style="color:#E0FFFF">**Поиск партнеров:**</span>
+- Пользователи cмогут искать других участников по различным критериям, таким как навыки, опыт, образование и т.д.
+- Фильтры и алгоритмы рекомендаций для улучшения точности поиска.
+
+<span style="color:#E0FFFF">**Формирование команд:**</span>
+- Позволить пользователям создавать и управлять своими командами.
+- Возможность присоединения к существующим командам.
+
+<span style="color:#E0FFFF">**Внедрение Встроенного Чата:**</span>
+- Возможность общения между участниками через встроенный чат для обсуждения идей.
+
+<span style="color:#E0FFFF">**Управление проектами:**</span>
+- Инструменты для управления проектом внутри платформы: создание задач, отслеживание прогресса, обмен файлами.
+- Календарь событий и напоминания для организации встреч, вебинаров и других мероприятий.
+
+<span style="color:#E0FFFF">**Интеграция с хакатонами:**</span>
+- Информация о предстоящих хакатонах, их формате, темах и призах.
+
+<span style="color:#E0FFFF">**Обратная связь и рейтинги:**</span>
+- Возможность оставлять отзывы и ставить рейтинги участникам после завершения проекта.
+- Репутационная система для повышения доверия и привлечения внимания к опытным участникам.
+
+## <span style="color:#F0F8FF"> Состав команды / Контакты </span>
+<span style="color:#E0FFFF">**Руководитель команды: Жуков Дмитрий**</span>
+
+**Состав и роли в команде:**
+
+<span style="color:#E0FFFF">Жуков Дмитрий:</span> Backend, ML, UI/UX:
+- Telegram: @dm1zhu
+
+<span style="color:#E0FFFF">Жуков Вадим:</span> Frontend, DevOps
+
+## <span style="color:#F0F8FF"> Архитектура </span>
+![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/Architecture.png)
+
+## <span style="color:#F0F8FF"> Макет </span>
+### Стартовая страница
+![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/start_page.png)
+### Главная страница
+![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/main_page.png)
+### Модальное окно ЛК
+![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/profile_modal_page.png)
+### Информация о пользователе
+![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/person_card.png)
+### Команды
+![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/teams_page.png)
+
+## <span style="color:#F0F8FF"> Run </span>
+```bash
+docker-compose up
+```
+
+## <span style="color:#F0F8FF"> Docs: </span>
+```bash
+OpenAPI: http://localhost:8000/api/docs
+```
