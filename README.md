@@ -92,19 +92,19 @@
 <span style="color:#E0FFFF">Жуков Вадим:</span> Frontend, DevOps
 
 ## <span style="color:#F0F8FF"> Архитектура </span>
-![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/Architecture.png)
+![image](https://github.com/Tsuchikage/HahathonApp/blob/master/docs/architecture.png)
 
 ## <span style="color:#F0F8FF"> Макет </span>
 ### Стартовая страница
-![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/start_page.png)
+![image](https://github.com/Tsuchikage/HahathonApp/blob/master/docs/start_page.png)
 ### Главная страница
-![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/main_page.png)
+![image](https://github.com/Tsuchikage/HahathonApp/blob/master/docs/main_page.png)
 ### Модальное окно ЛК
-![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/profile_modal_page.png)
+![image](https://github.com/Tsuchikage/HahathonApp/blob/master/docs/profile_modal_page.png)
 ### Информация о пользователе
-![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/person_card.png)
+![image](https://github.com/Tsuchikage/HahathonApp/blob/master/docs/person_card.png)
 ### Команды
-![image](https://github.com/Tsuchikage/HahathonApp/raw/main/docs/teams_page.png)
+![image](https://github.com/Tsuchikage/HahathonApp/blob/master/docs/teams_page.png)
 
 ## <span style="color:#F0F8FF"> Run </span>
 ```bash
