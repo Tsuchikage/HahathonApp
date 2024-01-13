@@ -1,12 +1,11 @@
 FROM node:18-alpine
-RUN apk add --no-cache libc6-compat
+
+COPY . ./app
+
 WORKDIR /app
 
-COPY ./src .
+RUN rm -f package-lock.json
 
-RUN npm ci
-
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+RUN npm install
 
 RUN npm run build
