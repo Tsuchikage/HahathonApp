@@ -1,4 +1,7 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.auth import Admin, CurrentUser
@@ -13,6 +16,7 @@ from src.users.schemas import (
 from src.users.services import create_user, delete_user, list_users, update_user
 from src.core.database import get_db
 from src.core.schemas import ExceptionSchema
+from src.users.models import User
 
 router = APIRouter(prefix="/user")
 
@@ -78,6 +82,30 @@ async def user_update(
 async def user_delete(user: CurrentUser, db: AsyncSession = Depends(get_db)) -> None:
     await delete_user(user=user, db=db)
     return None
+
+
+@router.get(
+    "/search",
+    response_model=List[UserResponse],
+    responses={status.HTTP_401_UNAUTHORIZED: {"model": ExceptionSchema}},
+    tags=["user"],
+)
+async def user_search(
+        query: str,
+        db: AsyncSession = Depends(get_db),
+) -> List[UserResponse]:
+    results = await db.execute(
+        select(User).filter(
+            (
+                    User.username.ilike(f"%{query}%") |
+                    User.first_name.ilike(f"%{query}%") |
+                    User.last_name.ilike(f"%{query}%")
+            )
+        )
+    )
+    users = results.scalars().all()
+
+    return [UserResponse.model_validate(user) for user in users]
 
 
 @router.get(
