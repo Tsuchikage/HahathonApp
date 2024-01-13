@@ -1,7 +1,5 @@
+import Teammates from '../components/Teammates'
+
 export default function Root() {
-	return (
-		<>
-			<div>ROOT</div>
-		</>
-	)
+	return <Teammates />
 }
