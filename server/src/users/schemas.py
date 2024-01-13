@@ -1,13 +1,13 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
-from pydantic import BaseModel, EmailStr, Field, model_validator
+from pydantic import BaseModel, EmailStr, model_validator
 
 from src.auth.utils import get_password_hash
 from src.users.enums import Order, Roles, Sort
 from src.core.schemas import PageSchema, PaginationSchema, ResponseSchema
 
-from src.users.models import Education
+from src.users.models import Education, City, Language, Hard, Soft, Country, Industry, Experience
 
 
 class UserRequest(BaseModel):
@@ -33,17 +33,17 @@ class UserResponse(ResponseSchema):
     email: EmailStr
     first_name: str | None
     last_name: str | None
-    country: str | None
-    city: str | None
+    country: Country | None
+    city: City | None
     telegram: str | None
     linkedin: str | None
     github: str | None
     education: Education | None
-    industry: str | None
-    experience_level: str | None
-    language: str | None
-    hard_skills: str | None
-    soft_skills: str | None
+    industry: Industry | None
+    experience: Experience | None
+    language: Language | None
+    hard: Hard | None
+    soft: Soft | None
     active: bool
     role: Roles
     create_date: datetime
@@ -63,10 +63,10 @@ class UserUpdateRequest(BaseModel):
     github: Optional[str] = None
     education: Optional[str] = None
     industry: Optional[str] = None
-    experience_level: Optional[str] = None
+    experience: Optional[str] = None
     language: Optional[str] = None
-    hard_skills: Optional[str] = None
-    soft_skills: Optional[str] = None
+    hard: Optional[str] = None
+    soft: Optional[str] = None
 
 
 class UserUpdateRequestAdmin(UserUpdateRequest):

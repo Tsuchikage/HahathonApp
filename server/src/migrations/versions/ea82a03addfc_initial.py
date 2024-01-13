@@ -1,5 +1,6 @@
 import sqlalchemy as sa
 from alembic import op
+from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = "ea82a03addfc"
@@ -9,12 +10,11 @@ depends_on = None
 
 
 def upgrade() -> None:
-
     op.create_table(
         "User",
         sa.Column("username", sa.String(), nullable=True),
         sa.Column("password", sa.String(), nullable=True),
-        sa.Column("email", sa.String(),unique=True, nullable=True),
+        sa.Column("email", sa.String(), unique=True, nullable=True),
         sa.Column("first_name", sa.String(), nullable=True),
         sa.Column("last_name", sa.String(), nullable=True),
         sa.Column("active", sa.Boolean(), nullable=True),
@@ -22,24 +22,74 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("create_date", sa.DateTime(), nullable=True),
         sa.Column("update_date", sa.DateTime(), nullable=True),
-        sa.Column("country", sa.String(), nullable=True),
-        sa.Column("city", sa.String(), nullable=True),
+        sa.Column(
+            'country',
+            sa.Enum(
+                'RUSSIA',
+                'BELARUS',
+                name='country'),
+            nullable=True),
+        sa.Column(
+            'city',
+            sa.Enum(
+                'MOSCOW',
+                'SAINT_PETERSBURG',
+                'MINSK',
+                name='city'),
+            nullable=True),
         sa.Column("telegram", sa.String(), unique=True, nullable=True),
         sa.Column("linkedin", sa.String(), unique=True, nullable=True),
         sa.Column("github", sa.String(), unique=True, nullable=True),
-        sa.Column("industry", sa.String(), nullable=True),
-        sa.Column("experience_level", sa.String(), nullable=True),
-        sa.Column("language", sa.String(), nullable=True),
-        sa.Column("hard_skills", sa.String(), nullable=True),
-        sa.Column("soft_skills", sa.String(), nullable=True),
+        sa.Column(
+            'industry',
+            sa.Enum(
+                'SOFTWARE',
+                'TELECOM',
+                'CYBERSECURITY',
+                'VIDEO_GAMES',
+                'CLOUD_SERVICES',
+                'FINANCE',
+                name='industry'),
+            nullable=True),
+        sa.Column(
+            'experience',
+            sa.Enum(
+                'JUNIOR',
+                'MIDDLE',
+                'SENIOR',
+                'NO_EXP',
+                name='experience'),
+            nullable=True),
+        sa.Column(
+            'language',
+            sa.Enum(
+                'ENG',
+                'RUS',
+                name='language'),
+            nullable=True),
+        sa.Column(
+            'hard',
+            sa.Enum(
+                'JAVASCRIPT',
+                'TYPESCRIPT',
+                'SQL',
+                'REACTJS',
+                name='hard'),
+            nullable=True),
+        sa.Column(
+            'soft',
+            sa.Enum(
+                'COMMUNICATION',
+                'CREATIVITY',
+                'LEADERSHIP',
+                name='soft'),
+            nullable=True),
         sa.Column(
             'education',
             sa.Enum(
                 'HIGH_SCHOOL',
-                'ASSOCIATE',
                 'BACHELOR',
                 'MASTER',
-                'DOCTORAL',
                 name='education'),
             nullable=True),
         sa.PrimaryKeyConstraint("id"),
