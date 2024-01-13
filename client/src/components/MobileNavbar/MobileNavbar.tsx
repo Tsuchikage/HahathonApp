@@ -1,48 +1,74 @@
-import { AppShell, Button, TextInput, TextInputProps } from '@mantine/core'
+import { AppShell, Burger, Button, Group, Stack } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 import classes from './MobileNavbar.module.css'
 import Logo from '../common/Logo'
-import { Link, Outlet, useLocation } from 'react-router-dom'
-import { IconSearch } from '@tabler/icons-react'
+import { Outlet } from 'react-router-dom'
 
-const SearchInput = (props: TextInputProps) => {
-	const icon = <IconSearch style={{ width: 16, height: 16 }} />
-
-	return (
-		<TextInput
-			variant="filled"
-			placeholder="Искать людей"
-			leftSection={icon}
-			style={{ marginInline: 'auto' }}
-			{...props}
-		/>
-	)
-}
-
-const LoginButton = () => {
-	return (
-		<Link to="auth">
-			<Button w={80}>Войти</Button>
-		</Link>
-	)
-}
+const links = [
+	{ link: '/about', label: 'Features' },
+	{ link: '/pricing', label: 'Pricing' },
+	{ link: '/learn', label: 'Learn' },
+	{ link: '/community', label: 'Community' }
+]
 
 const MobileNavbar = () => {
-	const location = useLocation()
+	const [opened, { toggle }] = useDisclosure()
 
-	const isAuth = location.pathname === '/auth'
+	const items = links.map(link => (
+		<a
+			key={link.label}
+			href={link.link}
+			className={classes.link}
+			onClick={event => event.preventDefault()}
+		>
+			{link.label}
+		</a>
+	))
 
 	return (
-		<AppShell header={{ height: 60 }} padding="md">
+		<AppShell
+			header={{ height: 60 }}
+			navbar={{
+				width: 300,
+				breakpoint: 'sm',
+				collapsed: { desktop: true, mobile: !opened }
+			}}
+			padding="md"
+		>
 			<AppShell.Header className={classes.header}>
-				<div
-					className={classes.inner}
-					style={{ paddingRight: isAuth ? 80 : 0 }}
-				>
-					<Logo size={28} />
-					<SearchInput />
-					{!isAuth && <LoginButton />}
+				<div className={classes.inner}>
+					<Group>
+						<Burger
+							opened={opened}
+							onClick={toggle}
+							size="sm"
+							hiddenFrom="sm"
+						/>
+						<Logo size={28} />
+					</Group>
+
+					<Group ml={50} gap={5} visibleFrom="sm">
+						{items}
+					</Group>
+					<Group visibleFrom="sm">
+						<Button variant="default">Log in</Button>
+						<Button>Sign up</Button>
+					</Group>
 				</div>
 			</AppShell.Header>
+
+			<AppShell.Navbar py="md" px={4}>
+				<Stack>
+					<Stack gap={5}>{items}</Stack>
+					<Group wrap="nowrap" px="xs">
+						<Button variant="default" w="100%">
+							Log in
+						</Button>
+						<Button w="100%">Sign up</Button>
+					</Group>
+				</Stack>
+			</AppShell.Navbar>
+
 			<AppShell.Main>
 				<Outlet />
 			</AppShell.Main>
