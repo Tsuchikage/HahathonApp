@@ -9,11 +9,17 @@ export default defineConfig({
 		APP_VERSION: JSON.stringify(pkg.version)
 	},
 	server: {
-		port: parseInt(process.env.PORT) || 3000,
-		host: true
+		port: parseInt(process.env.PORT ?? '3000'),
+		host: true,
+		proxy: {
+			'/api': {
+				target: 'http://localhost:8000',
+				changeOrigin: true
+			}
+		}
 	},
 	preview: {
-		port: parseInt(process.env.PORT) || 3000,
+		port: parseInt(process.env.PORT ?? '3000'),
 		host: true
 	}
 })
