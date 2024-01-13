@@ -81,7 +81,7 @@ async def user_delete(user: CurrentUser, db: AsyncSession = Depends(get_db)) -> 
 
 
 @router.get(
-    "/admin",
+    "/",
     response_model=UserPage,
     responses={status.HTTP_401_UNAUTHORIZED: {"model": ExceptionSchema}},
     tags=["admin"],
