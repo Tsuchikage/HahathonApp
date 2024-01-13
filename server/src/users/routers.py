@@ -21,6 +21,19 @@ from src.users.models import User
 router = APIRouter(prefix="/user")
 
 
+@router.get(
+    "/",
+    response_model=UserResponse,
+    responses={
+        status.HTTP_401_UNAUTHORIZED: {"model": ExceptionSchema},
+    },
+    status_code=status.HTTP_200_OK,
+    tags=["user"],
+)
+async def user_get(user: CurrentUser) -> UserResponse:
+    return UserResponse.model_validate(user)
+
+
 @router.post(
     "/",
     response_model=UserResponse,
@@ -39,16 +52,6 @@ async def user_create(
         status_code=status.HTTP_409_CONFLICT,
         detail=f"User '{user.username}' already exists",
     )
-
-
-@router.get(
-    "/",
-    response_model=UserResponse,
-    responses={status.HTTP_401_UNAUTHORIZED: {"model": ExceptionSchema}},
-    tags=["user"],
-)
-async def user_get(user: CurrentUser) -> UserResponse:
-    return UserResponse.model_validate(user)
 
 
 @router.put(
@@ -109,13 +112,12 @@ async def user_search(
 
 
 @router.get(
-    "/",
+    "/all",
     response_model=UserPage,
     responses={status.HTTP_401_UNAUTHORIZED: {"model": ExceptionSchema}},
-    tags=["admin"],
+    tags=["user"],
 )
 async def users_list(
-        admin: Admin,
         pagination: UserPagination = Depends(),
         db: AsyncSession = Depends(get_db),
 ) -> UserPage:
@@ -126,5 +128,3 @@ async def users_list(
         order=pagination.order,
         db=db,
     )
-
-
