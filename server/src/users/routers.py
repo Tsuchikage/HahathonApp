@@ -1,4 +1,7 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.auth import Admin, CurrentUser
@@ -13,6 +16,7 @@ from src.users.schemas import (
 from src.users.services import create_user, delete_user, list_users, update_user
 from src.core.database import get_db
 from src.core.schemas import ExceptionSchema
+from src.users.models import User
 
 router = APIRouter(prefix="/user")
 
@@ -81,7 +85,31 @@ async def user_delete(user: CurrentUser, db: AsyncSession = Depends(get_db)) -> 
 
 
 @router.get(
-    "/admin",
+    "/search",
+    response_model=List[UserResponse],
+    responses={status.HTTP_401_UNAUTHORIZED: {"model": ExceptionSchema}},
+    tags=["user"],
+)
+async def user_search(
+        query: str,
+        db: AsyncSession = Depends(get_db),
+) -> List[UserResponse]:
+    results = await db.execute(
+        select(User).filter(
+            (
+                    User.username.ilike(f"%{query}%") |
+                    User.first_name.ilike(f"%{query}%") |
+                    User.last_name.ilike(f"%{query}%")
+            )
+        )
+    )
+    users = results.scalars().all()
+
+    return [UserResponse.model_validate(user) for user in users]
+
+
+@router.get(
+    "/",
     response_model=UserPage,
     responses={status.HTTP_401_UNAUTHORIZED: {"model": ExceptionSchema}},
     tags=["admin"],
@@ -99,34 +127,4 @@ async def users_list(
         db=db,
     )
 
-#
-# @router.patch(
-#     "/profile",
-#     response_model=UserUpdateProfileResponse,
-#     responses={
-#         status.HTTP_401_UNAUTHORIZED: {"model": ExceptionSchema},
-#         status.HTTP_404_NOT_FOUND: {"model": ExceptionSchema},
-#     },
-#     tags=["user"],
-# )
-# async def user_update_profile(
-#         user: CurrentUser,
-#         payload: UserUpdateProfileRequest,
-#         db: AsyncSession = Depends(get_db),
-# ) -> UserUpdateProfileResponse:
-#     if updated_profile := await update_user_profile(user=user, payload=payload, db=db):
-#         return updated_profile
-#     raise HTTPException(
-#         status_code=status.HTTP_404_NOT_FOUND,
-#         detail=f"User profile not found",
-#     )
-#
-#
-# @router.get(
-#     "/profile",
-#     response_model=UserUpdateProfileResponse,
-#     tags=["user"],
-# )
-# async def get_user_profile_endpoint(user: CurrentUser) -> UserUpdateProfileResponse:
-#     return UserUpdateProfileResponse.model_validate(user)
 
