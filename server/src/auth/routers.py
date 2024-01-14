@@ -10,11 +10,14 @@ from src.auth.services import (
 from src.core.database import get_db
 from src.core.schemas import ExceptionSchema
 
+from src.users.schemas import UserRequest
+from src.users.services import create_user
+
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
 @router.post(
-    "/token",
+    "/login",
     response_model=Token,
     responses={401: {"model": ExceptionSchema}},
 )
@@ -31,6 +34,27 @@ async def token(credentials: Credentials, db: AsyncSession = Depends(get_db)) ->
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Incorrect username or password",
         headers={"WWW-Authenticate": "Bearer"},
+    )
+
+
+@router.post(
+    "/signup",
+    response_model=Token,
+    responses={
+        status.HTTP_409_CONFLICT: {"model": ExceptionSchema},
+    },
+    status_code=status.HTTP_201_CREATED,
+)
+async def user_create(
+        user: UserRequest, db: AsyncSession = Depends(get_db)
+) -> Token:
+    if created_user := await create_user(user=user, db=db):
+        return await generate_token(
+            user_id=created_user.id
+        )
+    raise HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail=f"User '{user.username}' already exists",
     )
 
 

@@ -22,7 +22,7 @@ router = APIRouter(prefix="/user")
 
 
 @router.get(
-    "/",
+    "/me",
     response_model=UserResponse,
     responses={
         status.HTTP_401_UNAUTHORIZED: {"model": ExceptionSchema},
@@ -32,26 +32,6 @@ router = APIRouter(prefix="/user")
 )
 async def user_get(user: CurrentUser) -> UserResponse:
     return UserResponse.model_validate(user)
-
-
-@router.post(
-    "/",
-    response_model=UserResponse,
-    responses={
-        status.HTTP_409_CONFLICT: {"model": ExceptionSchema},
-    },
-    status_code=status.HTTP_201_CREATED,
-    tags=["user"],
-)
-async def user_create(
-        user: UserRequest, db: AsyncSession = Depends(get_db)
-) -> UserResponse:
-    if created_user := await create_user(user=user, db=db):
-        return created_user
-    raise HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail=f"User '{user.username}' already exists",
-    )
 
 
 @router.put(
