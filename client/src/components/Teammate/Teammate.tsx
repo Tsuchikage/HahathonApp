@@ -1,5 +1,5 @@
 import { Avatar, Text, Button, Paper } from '@mantine/core'
-import classes from './Teammat.module.css'
+import classes from './Teammate.module.css'
 
 const Teammate = () => {
 	return (
