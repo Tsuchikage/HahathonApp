@@ -1,6 +1,7 @@
 import {
 	Card,
 	Grid,
+	Pagination,
 	ScrollArea,
 	SimpleGrid,
 	Skeleton,
@@ -31,43 +32,41 @@ const Teammates = () => {
 	}, [])
 
 	return (
-		<Transition
-			mounted={mounted}
-			transition="fade"
-			duration={400}
-			timingFunction="ease"
-			keepMounted
-		>
-			{styles => (
-				<div
-					className={classNames(classes.teammates, {
-						[`${classes['expanded']}`]: !!expandedCardIndex
-					})}
-					style={styles}
-				>
-					{items.map((_, i) => (
-						<Card
-							className={classNames(
-								classes.card,
-								// classes[`card-${i + 1}`],
-								classes['card-img'],
-								{
+		<Stack maw={1200} mx="auto" w="100%" h="100%" mih="100%">
+			<Transition
+				mounted={mounted}
+				transition="fade"
+				duration={400}
+				timingFunction="ease"
+				keepMounted
+			>
+				{styles => (
+					<div
+						className={classNames(classes.teammates, {
+							[`${classes['expanded']}`]: !!expandedCardIndex
+						})}
+						style={styles}
+					>
+						{items.map((_, i) => (
+							<Card
+								className={classNames(classes.card, {
 									[`${classes['active']}`]: expandedCardIndex === i.toString()
-								}
-							)}
-							withBorder
-							onClick={() => handleCardClick(i.toString())}
-						>
-							{expandedCardIndex === i.toString() ? (
-								<Teammate />
-							) : (
-								<TeammateThumbnail />
-							)}
-						</Card>
-					))}
-				</div>
-			)}
-		</Transition>
+								})}
+								withBorder
+								onClick={() => handleCardClick(i.toString())}
+							>
+								{expandedCardIndex === i.toString() ? (
+									<Teammate />
+								) : (
+									<TeammateThumbnail />
+								)}
+							</Card>
+						))}
+					</div>
+				)}
+			</Transition>
+			<Pagination total={10} style={{ alignSelf: 'flex-end' }} />
+		</Stack>
 	)
 }
 
