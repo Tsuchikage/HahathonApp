@@ -1,48 +1,20 @@
 .teammates {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 24px;
-	max-width: 1200px;
-	width: 100%;
-	margin-inline: auto;
+
+	@media (max-width: $mantine-breakpoint-sm) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	@media (max-width: $mantine-breakpoint-xs) {
+		grid-template-columns: repeat(1, minmax(0, 1fr));
+	}
 }
 
 .card {
-	border-radius: 20px;
-	overflow: hidden;
-	max-width: 100%;
-	contain: layout;
-	position: relative;
-	z-index: 1;
 	cursor: pointer;
-	width: auto;
-	aspect-ratio: 1;
-}
-
-.card-1 {
-	background-image: url('https://images.unsplash.com/photo-1567653418876-5bb0e566e1c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1664&q=80');
-}
-.card-2 {
-	background-image: url('https://images.unsplash.com/photo-1575500221017-ea5e7b7d0e34?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1635&q=80');
-}
-.card-3 {
-	background-image: url('https://images.unsplash.com/photo-1506619216599-9d16d0903dfd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80');
-}
-.card-4 {
-	background-color: #e3dfec;
-	background-image: url('https://images.unsplash.com/photo-1684483871267-739be928cb0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=400&q=60');
-}
-.card-5 {
-	background-image: url('https://images.unsplash.com/photo-1559181567-c3190ca9959b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1664&q=80');
-}
-.card-6 {
-	background-color: #f8d7cd;
-	background-image: url('https://images.unsplash.com/photo-1586788224331-947f68671cf1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80');
-}
-.card-img {
-	object-fit: cover;
-	background-size: cover;
-	background-position: center;
+	min-height: 356px;
 }
 
 .active {
@@ -50,13 +22,20 @@
 	grid-column-end: 3;
 	grid-row: 1;
 	grid-row-end: 6;
-	z-index: 999;
-	aspect-ratio: 1;
+
+	@media (max-width: $mantine-breakpoint-sm) {
+		grid-column: span 3 / span 3;
+		grid-row: 1;
+	}
 }
 
 .expanded .card:not(.active) {
 	opacity: 0.4;
 	pointer-events: none;
-	aspect-ratio: 3;
 	grid-column-start: 3;
+	min-height: 128px;
+
+	@media (max-width: $mantine-breakpoint-sm) {
+		grid-column: span 3 / span 3;
+	}
 }
