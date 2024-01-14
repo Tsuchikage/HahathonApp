@@ -1,13 +1,21 @@
-import { Avatar, Text, Group } from '@mantine/core'
+import { Avatar, Text, Group, Stack } from '@mantine/core'
 import { IconPhoneCall, IconAt } from '@tabler/icons-react'
 import classes from './TeammateThumbnail.module.css'
+import { Teammate } from '../Teammate'
+import Achievements from '../Achievements'
+import Tags from '../Skills'
+import About from '../About'
 
-const TeammateThumbnail = () => {
+const TeammateThumbnail = ({
+	showAbout = false,
+	showTags = false,
+	...rest
+}: Props) => {
 	return (
-		<div>
+		<Stack justify="space-between" h="100%">
 			<Group wrap="nowrap">
 				<Avatar
-					src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png"
+					src={`https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-${rest.teammate.id}.png`}
 					size={94}
 					radius="md"
 				/>
@@ -35,8 +43,18 @@ const TeammateThumbnail = () => {
 					</Group>
 				</div>
 			</Group>
-		</div>
+			{showAbout && (
+				<About text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+			)}
+			{showTags && <Tags count={7} />}
+		</Stack>
 	)
 }
 
 export default TeammateThumbnail
+
+type Props = {
+	teammate: Teammate
+	showAbout?: boolean
+	showTags?: boolean
+}

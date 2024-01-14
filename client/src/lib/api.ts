@@ -1,19 +1,32 @@
 import axios, { AxiosResponse, AxiosError } from 'axios'
+import { createEvent, createStore, persist } from './state-engine'
+
+export const setAccessToken = createEvent<string | null>()
+export const setRefreshToken = createEvent<string | null>()
+
+export const $tokens = createStore<Tokens>({
+	access_token: null,
+	refresh_token: null
+})
+	.on(setAccessToken, (state, access_token) => ({ ...state, access_token }))
+	.on(setRefreshToken, (state, refresh_token) => ({
+		...state,
+		refresh_token
+	}))
+
+persist({ store: $tokens, key: 'tokens' })
 
 export const getAccessToken = (): string | null => {
-	return localStorage.getItem('access_token')
+	return $tokens.getState().access_token
 }
 
-const setAccessToken = (token: string): void => {
-	localStorage.setItem('access_token', token)
+export const getRefreshToken = (): string | null => {
+	return $tokens.getState().refresh_token
 }
 
-const getRefreshToken = (): string | null => {
-	return localStorage.getItem('refresh_token')
-}
-
-const setRefreshToken = (token: string): void => {
-	localStorage.setItem('refresh_token', token)
+export const logout = () => {
+	setAccessToken(null)
+	setRefreshToken(null)
 }
 
 // for multiple requests
@@ -138,4 +151,9 @@ export const put = async <T>(url: string, data: any): Promise<T> => {
 type AuthResponse = {
 	access_token: string
 	refresh_token: string
+}
+
+type Tokens = {
+	access_token: string | null
+	refresh_token: string | null
 }

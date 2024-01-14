@@ -1,8 +1,16 @@
-import { AppShell, Button, TextInput, TextInputProps } from '@mantine/core'
-import classes from './MobileNavbar.module.css'
-import Logo from '../common/Logo'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import {
+	AppShell,
+	Button,
+	Group,
+	TextInput,
+	TextInputProps
+} from '@mantine/core'
+import { Link, useLocation } from 'react-router-dom'
 import { IconSearch } from '@tabler/icons-react'
+import { useToken } from '../../hooks'
+import classes from './Header.module.css'
+import { Logo, ThemeSwitch } from '..'
+import UserMenu from '../UserMenu'
 
 const SearchInput = (props: TextInputProps) => {
 	const icon = <IconSearch style={{ width: 16, height: 16 }} />
@@ -26,28 +34,31 @@ const LoginButton = () => {
 	)
 }
 
-const MobileNavbar = () => {
+const Header = ({ children }: HeaderProps) => {
 	const location = useLocation()
-
+	const { token } = useToken()
 	const isAuth = location.pathname === '/auth'
 
 	return (
 		<AppShell header={{ height: 60 }} padding="md">
 			<AppShell.Header className={classes.header}>
-				<div
-					className={classes.inner}
-					style={{ paddingRight: isAuth ? 80 : 0 }}
-				>
+				<div className={classes.inner}>
 					<Logo size={28} />
 					<SearchInput />
-					{!isAuth && <LoginButton />}
+					<Group gap="xs">
+						<ThemeSwitch />
+						{!isAuth && !token && <LoginButton />}
+						{token && <UserMenu />}
+					</Group>
 				</div>
 			</AppShell.Header>
-			<AppShell.Main>
-				<Outlet />
-			</AppShell.Main>
+			<AppShell.Main>{children}</AppShell.Main>
 		</AppShell>
 	)
 }
 
-export default MobileNavbar
+export default Header
+
+type HeaderProps = {
+	children: React.ReactNode
+}

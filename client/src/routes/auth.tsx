@@ -1,7 +1,8 @@
 import AuthForm from '../components/AuthForm/AuthForm'
+import { withHeader } from '../components/hocs'
 
 const Auth = () => {
 	return <AuthForm />
 }
 
-export default Auth
+export default withHeader(Auth)

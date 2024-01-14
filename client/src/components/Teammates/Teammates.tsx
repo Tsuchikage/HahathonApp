@@ -1,35 +1,25 @@
-import {
-	Card,
-	Grid,
-	Pagination,
-	ScrollArea,
-	SimpleGrid,
-	Skeleton,
-	Stack,
-	Transition,
-	rem
-} from '@mantine/core'
+import { Card, Pagination, Stack, Transition } from '@mantine/core'
 import classes from './Teammates.module.css'
-import classNames from 'classnames'
+import cx from 'clsx'
 import { useEffect, useState } from 'react'
 import Teammate from '../Teammate'
 import TeammateThumbnail from '../TeammateThumbnail'
 
 const Teammates = () => {
 	const [mounted, setMounted] = useState(false)
-	const [expandedCardIndex, setExpandedCardIndex] = useState<string | null>(
-		null
-	)
+	const [selected, setSelected] = useState<number | null>(null)
 
-	const handleCardClick = (index: string) => {
-		setExpandedCardIndex(prevIndex => (prevIndex === index ? null : index))
+	const handleCardClick = (index: number) => {
+		setSelected(prevIndex => (prevIndex === index ? null : index))
 	}
 
-	const items = [...Array(6).keys()]
+	const teammates = [...Array(6)].map((_, i) => i + 1)
 
 	useEffect(() => {
 		setMounted(true)
 	}, [])
+
+	const resetSelected = () => setSelected(null)
 
 	return (
 		<Stack maw={1200} mx="auto" w="100%" h="100%" mih="100%">
@@ -42,23 +32,29 @@ const Teammates = () => {
 			>
 				{styles => (
 					<div
-						className={classNames(classes.teammates, {
-							[`${classes['expanded']}`]: !!expandedCardIndex
+						className={cx(classes.teammates, {
+							[`${classes['expanded']}`]: !!selected
 						})}
 						style={styles}
 					>
-						{items.map((_, i) => (
+						{teammates.map(id => (
 							<Card
-								className={classNames(classes.card, {
-									[`${classes['active']}`]: expandedCardIndex === i.toString()
+								key={id}
+								className={cx(classes.card, {
+									[`${classes['active']}`]: selected === id,
+									[`${classes.pointer}`]: selected !== id
 								})}
 								withBorder
-								onClick={() => handleCardClick(i.toString())}
+								onClick={() => selected !== id && handleCardClick(id)}
 							>
-								{expandedCardIndex === i.toString() ? (
-									<Teammate />
+								{selected === id ? (
+									<Teammate teammate={{ id }} resetSelected={resetSelected} />
 								) : (
-									<TeammateThumbnail />
+									<TeammateThumbnail
+										teammate={{ id }}
+										showAbout={!Boolean(selected)}
+										showTags={!Boolean(selected)}
+									/>
 								)}
 							</Card>
 						))}

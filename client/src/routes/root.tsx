@@ -1,5 +1,8 @@
 import Teammates from '../components/Teammates'
+import { withHeader } from '../components/hocs'
 
-export default function Root() {
+const Root = () => {
 	return <Teammates />
 }
+
+export default withHeader(Root)
